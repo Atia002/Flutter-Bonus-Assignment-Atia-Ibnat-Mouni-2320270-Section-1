@@ -3,6 +3,7 @@ import 'package:summer_iub_app/screens/coffe_records_screen.dart';
 import 'package:summer_iub_app/screens/create_coffee_record_screen.dart';
 import 'package:summer_iub_app/screens/firebase_coffee_records.dart';
 import 'package:summer_iub_app/widgets/app_backgroud_design_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   final String pageTitle;
@@ -16,12 +17,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _coffeeCount = 0;
 
-  void incrememntCoffeeCount() {
+  Future<void> incrememntCoffeeCount() async {
     _coffeeCount++;
 
     setState(() {});
 
     print("Coffee Count: $_coffeeCount");
+
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    await firestore.collection("count_collection").add({
+      "coffee_count": _coffeeCount,
+      "timestamp": Timestamp.now(),
+    });
   }
 
   void navigateToCoffeeRecordsScreen() {

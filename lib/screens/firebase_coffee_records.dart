@@ -180,6 +180,28 @@ class FirebaseCoffeRecordsScreen extends StatelessWidget {
           },
         ),
       ),
+
+      // FIREBASE TEST RECORD BUTTON
+      floatingActionButton: Consumer<CoffeeStateManagement>(
+        builder: (context, csm, _) {
+          return FloatingActionButton(
+            onPressed: () async {
+              await csm.addCoffeeRecordToFirebase(
+                CoffeeRecordsModel(
+                  id: DateTime.now().microsecondsSinceEpoch,
+                  title: "New Coffee Record ${csm.items.length + 1}",
+                  des: "This is test data",
+                  amount: 10.0,
+                  date: DateTime.now(),
+                ),
+              );
+            },
+            backgroundColor: Colors.brown,
+            foregroundColor: Colors.white,
+            child: const Icon(Icons.local_cafe),
+          );
+        },
+      ),
     );
   }
 }
