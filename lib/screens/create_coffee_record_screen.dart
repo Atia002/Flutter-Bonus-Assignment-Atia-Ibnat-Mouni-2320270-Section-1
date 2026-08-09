@@ -11,7 +11,6 @@ class CreateCoffeeRecordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final TextEditingController titleController = TextEditingController();
     final TextEditingController amountController = TextEditingController();
     final TextEditingController descriptionController = TextEditingController();
@@ -20,16 +19,11 @@ class CreateCoffeeRecordScreen extends StatelessWidget {
 
     final csm = Provider.of<CoffeeStateManagement>(context, listen: false);
 
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
           "Create Coffee Record",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20.00,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.00),
         ),
         backgroundColor: Colors.brown,
         foregroundColor: Colors.white,
@@ -46,19 +40,18 @@ class CreateCoffeeRecordScreen extends StatelessWidget {
                   labelText: "Title",
                   validator: CustomValidators.validateTitle,
                 ),
-            
-                const SizedBox(height: 20.00,),
-            
+
+                const SizedBox(height: 20.00),
+
                 CoreInputWidget(
                   controller: amountController,
                   labelText: "Amount",
                   keyboardType: TextInputType.number,
                   validator: CustomValidators.validateAmount,
                 ),
-            
-            
-                const SizedBox(height: 20.00,),
-              
+
+                const SizedBox(height: 20.00),
+
                 CoreInputWidget(
                   controller: descriptionController,
                   labelText: "Description",
@@ -66,45 +59,47 @@ class CreateCoffeeRecordScreen extends StatelessWidget {
                   maxLine: 5,
                   validator: CustomValidators.validateDescreption,
                 ),
-            
+
                 const Spacer(),
                 ElevatedButton.icon(
-                    onPressed: (){
-                      print(formKey.currentState!.validate());
-                      if(formKey.currentState!.validate()){
-                        CoffeeRecordsModel newRecord = CoffeeRecordsModel(
+                  onPressed: () {
+                    print(formKey.currentState!.validate());
+                    if (formKey.currentState!.validate()) {
+                      CoffeeRecordsModel newRecord = CoffeeRecordsModel(
                         id: DateTime.now().microsecondsSinceEpoch,
                         title: titleController.text,
                         des: descriptionController.text,
                         amount: double.tryParse(amountController.text) ?? 0.0,
                         date: DateTime.now(),
                       );
-            
-                      csm.addCoffeeRecord(newRecord);
-            
-            
+
+                      csm.addCoffeeRecordToFirebase(newRecord);
+
                       titleController.clear();
                       amountController.clear();
                       descriptionController.clear();
-            
+
                       Navigator.of(context).pop();
-                      }
-
-
-                      
-            
-                    }, 
-                    label: Text("Save Coffee Record", style: TextStyle(fontSize: 18.00, fontWeight: FontWeight.bold),),
-                    icon: Icon(Icons.save , size: 30.00,),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.brown,
-                      foregroundColor: Colors.white,
-                      minimumSize: Size(double.infinity, 50.00),
-                      padding: EdgeInsets.symmetric(horizontal: 50.00, vertical: 15.00
+                    }
+                  },
+                  label: Text(
+                    "Save Coffee Record",
+                    style: TextStyle(
+                      fontSize: 18.00,
+                      fontWeight: FontWeight.bold,
                     ),
-                  )
+                  ),
+                  icon: Icon(Icons.save, size: 30.00),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.brown,
+                    foregroundColor: Colors.white,
+                    minimumSize: Size(double.infinity, 50.00),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 50.00,
+                      vertical: 15.00,
+                    ),
+                  ),
                 ),
-            
               ],
             ),
           ),

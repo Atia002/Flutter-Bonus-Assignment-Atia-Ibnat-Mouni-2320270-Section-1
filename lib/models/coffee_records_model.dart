@@ -1,16 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CoffeeRecordsModel {
-  final int id;
-  final String title;
-  final String des;
+  int? id;
+  String? title;
+  String? des;
   double? amount;
-  final DateTime date;
+  DateTime? date;
+  String? docId;
 
   CoffeeRecordsModel({
-    required this.id,
-    required this.title,
-    required this.des,
+    this.id,
+    this.title,
+    this.des,
     this.amount,
-    required this.date,
+    this.date,
+    this.docId,
   });
 
+  factory CoffeeRecordsModel.fromJson(Map<String, dynamic> json) {
+    return CoffeeRecordsModel(
+      id: json['id'] as int? ?? 0,
+      title: json['title'] as String? ?? '',
+      des: json['des'] as String? ?? '',
+      amount: (json['amount'] as num?)?.toDouble() ?? 0.0,
+      date:
+          json['date'] is Timestamp
+              ? (json['date'] as Timestamp).toDate()
+              : DateTime.now(),
+      docId: json['doc_id'] as String? ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'des': des,
+      'amount': amount,
+      'date': Timestamp.fromDate(date ?? DateTime.now()),
+      'doc_id': docId ?? '',
+    };
+  }
 }
